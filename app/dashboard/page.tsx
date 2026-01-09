@@ -17,7 +17,7 @@ async function DashboardStats() {
   today.setHours(0, 0, 0, 0)
   
   // Get today's stats
-  const { data: todayCustomers, error: customersError } = await supabase
+  const { count: todayCustomersCount, error: customersError } = await supabase
     .from('customers')
     .select('id', { count: 'exact', head: true })
     .gte('created_at', today.toISOString())
@@ -45,7 +45,7 @@ async function DashboardStats() {
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <p className="text-sm font-medium text-muted-foreground">New Customers</p>
-              <p className="text-3xl font-bold">{todayCustomers?.count || 0}</p>
+              <p className="text-3xl font-bold">{todayCustomersCount || 0}</p>
               <p className="text-xs text-muted-foreground">Today</p>
             </div>
             <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -195,7 +195,7 @@ async function ExpiringPointsAlert() {
     return null
   }
   
-  const expiringCount = new Set(expiringPoints.map(p => p.customers.id)).size
+  const expiringCount = new Set(expiringPoints.map((p: any) => p.customers.id)).size
   
   if (expiringCount === 0) {
     return null
@@ -246,7 +246,7 @@ export default async function DashboardPage() {
         <div>
           <h1 className="text-4xl font-bold tracking-tight">Dashboard</h1>
           <p className="text-muted-foreground mt-2">
-            Welcome back! Here's what's happening with your loyalty program today.
+            Welcome back! Here&apos;s what&apos;s happening with your loyalty program today.
           </p>
         </div>
         
