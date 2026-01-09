@@ -37,7 +37,7 @@ CREATE EXTENSION IF NOT EXISTS pg_cron;
 Make sure your `.env.local` file exists with your Supabase credentials:
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=https://wsiapyrsfbhfvpwrcmld.supabase.co
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
 ```
 

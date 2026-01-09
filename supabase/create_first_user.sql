@@ -30,3 +30,4 @@ SET
 -- Verify the user was created
 SELECT id, email, full_name, role, is_active FROM users WHERE email = 'your-email@example.com';
 
+

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { Search, UserPlus, Loader2, User } from 'lucide-react'
 import { toast } from 'sonner'
@@ -100,6 +100,13 @@ export default function SearchBar() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  const handleSelectCustomer = useCallback((customerId: string) => {
+    setQuery('')
+    setShowResults(false)
+    setSelectedIndex(-1)
+    router.push(`/customers/${customerId}`)
+  }, [router])
+
   useEffect(() => {
     // Keyboard navigation
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -124,14 +131,7 @@ export default function SearchBar() {
       document.addEventListener('keydown', handleKeyDown)
       return () => document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [showResults, results, selectedIndex])
-
-  const handleSelectCustomer = (customerId: string) => {
-    setQuery('')
-    setShowResults(false)
-    setSelectedIndex(-1)
-    router.push(`/customers/${customerId}`)
-  }
+  }, [showResults, results, selectedIndex, handleSelectCustomer])
 
   return (
     <div ref={searchRef} className="relative w-full max-w-3xl mx-auto">
@@ -153,6 +153,7 @@ export default function SearchBar() {
           placeholder="Search by phone, MGP ID, or name... (Ctrl+K)"
           className="w-full pl-12 pr-32 py-4 text-base border border-input rounded-lg bg-background focus-ring"
           aria-label="Search customers"
+          role="combobox"
           aria-expanded={showResults}
           aria-controls="search-results"
           aria-autocomplete="list"

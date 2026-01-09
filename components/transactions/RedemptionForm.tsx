@@ -10,6 +10,7 @@ import Card, { CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import Badge from '@/components/ui/Badge'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import { cn } from '@/lib/utils/cn'
+import RedemptionSuccessModal from './RedemptionSuccessModal'
 
 export default function RedemptionForm() {
   const router = useRouter()
@@ -27,6 +28,9 @@ export default function RedemptionForm() {
   const [finalBill, setFinalBill] = useState(0)
   const [newPoints, setNewPoints] = useState(0)
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [transactionResult, setTransactionResult] = useState<any>(null)
+  const [newBalance, setNewBalance] = useState(0)
 
   useEffect(() => {
     if (customerId) {
@@ -127,15 +131,33 @@ export default function RedemptionForm() {
       const result = await response.json()
       
       if (!response.ok) {
-        throw new Error(result.error || 'Failed to redeem points')
+        // Extract detailed error message
+        const errorMessage = result.error || 'Failed to redeem points'
+        const errorDetails = result.details ? `: ${JSON.stringify(result.details)}` : ''
+        throw new Error(`${errorMessage}${errorDetails}`)
       }
       
-      toast.success(`Points redeemed! Discount: ₹${discount}. New points earned: ${newPoints}`, {
+      // Store transaction result and show success modal
+      setTransactionResult(result.data)
+      
+      // Calculate new balance: available - redeemed + new points earned
+      const actualNewPoints = result.data?.new_points_earned || newPoints
+      const calculatedNewBalance = availablePoints - points + actualNewPoints
+      setNewBalance(calculatedNewBalance)
+      setShowSuccessModal(true)
+      
+      // Also show toast notification
+      const actualDiscount = result.data?.discount || discount
+      toast.success(`Points redeemed successfully! Discount: ₹${actualDiscount.toLocaleString()}. New points earned: ${actualNewPoints}`, {
         duration: 5000,
       })
-      router.push(`/customers/${customerId}`)
     } catch (error: any) {
-      toast.error(error.message)
+      // Show detailed error message
+      const errorMsg = error.message || 'An unexpected error occurred'
+      toast.error(errorMsg, {
+        duration: 6000,
+      })
+      console.error('Redemption error:', error)
     } finally {
       setLoading(false)
     }
@@ -227,7 +249,7 @@ export default function RedemptionForm() {
                     <div>
                       <p className="font-medium text-foreground mb-1">No Points Available</p>
                       <p className="text-sm text-muted-foreground">
-                        This customer doesn't have any active points to redeem. Points become active 24 hours after earning.
+                        This customer doesn&apos;t have any active points to redeem. Points become active 24 hours after earning.
                       </p>
                     </div>
                   </div>
@@ -386,6 +408,28 @@ export default function RedemptionForm() {
             </form>
           </CardContent>
         </Card>
+
+        {/* Success Modal */}
+        {showSuccessModal && transactionResult && customer && (
+          <RedemptionSuccessModal
+            isOpen={showSuccessModal}
+            onClose={() => {
+              setShowSuccessModal(false)
+              router.push(`/customers/${customerId}`)
+            }}
+            transaction={transactionResult}
+            customer={{
+              name: customer.name,
+              mgp_id: customer.mgp_id,
+              id: customer.id,
+              phone: customer.phone,
+              email: customer.email,
+            }}
+            billAmount={parseFloat(billAmount)}
+            invoiceNumber={invoiceNumber || null}
+            availableBalance={newBalance}
+          />
+        )}
       </div>
     </div>
   )

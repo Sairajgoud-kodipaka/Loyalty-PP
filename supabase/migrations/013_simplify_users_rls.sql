@@ -15,3 +15,4 @@ USING (true);
 -- Verify RLS is enabled
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 
+

@@ -34,3 +34,4 @@ FROM pg_policies
 WHERE tablename = 'users' 
 AND policyname = 'Allow authenticated read users';
 
+

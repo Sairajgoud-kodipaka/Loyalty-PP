@@ -1,0 +1,15 @@
+# VERCEL ENVIRONMENT VARIABLES - QUICK COPY
+# Copy these into Vercel Dashboard → Settings → Environment Variables
+
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
+NEXT_SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
+
+# INSTRUCTIONS:
+# 1. Replace placeholder values with your actual Supabase credentials
+# 2. Get credentials from: Supabase Dashboard → Settings → API
+# 3. Set for: Production, Preview, and Development environments
+# 4. Redeploy after adding variables
+
+# For detailed instructions, see: VERCEL_ENV_TEMPLATE.md
+

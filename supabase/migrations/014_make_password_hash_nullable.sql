@@ -10,3 +10,4 @@ UPDATE users
 SET password_hash = NULL 
 WHERE password_hash = '';
 
+

@@ -1,5 +1,5 @@
 import LoginForm from '@/components/auth/LoginForm'
-import { Gem } from 'lucide-react'
+import Image from 'next/image'
 
 export default async function LoginPage() {
   // Let middleware handle redirects - don't check auth here to avoid redirect loops
@@ -10,8 +10,16 @@ export default async function LoginPage() {
         <div className="text-center space-y-4">
           {/* Logo/Brand Icon */}
           <div className="flex justify-center">
-            <div className="h-20 w-20 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-lg">
-              <Gem className="h-10 w-10 text-white" aria-hidden="true" />
+            <div className="relative h-24 w-auto flex items-center justify-center">
+              <Image
+                src="/pearl-logo.png"
+                alt="Mangatrai Pearls & Jewellers"
+                width={200}
+                height={120}
+                priority
+                className="h-auto w-auto max-h-24 object-contain"
+                style={{ width: 'auto', height: 'auto' }}
+              />
             </div>
           </div>
           

@@ -234,7 +234,7 @@ export default function LoginForm() {
               href="/register"
               className="text-primary hover:text-primary/80 font-medium transition-colors"
             >
-              Don't have an account? Register here
+              Don&apos;t have an account? Register here
             </Link>
           </div>
         </form>

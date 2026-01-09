@@ -86,3 +86,70 @@
     background-size: 1000px 100%;
   }
 }
+
+/* Print Styles - Clean Receipt Printing */
+@media print {
+  /* Remove all margins and padding from page */
+  @page {
+    size: 80mm auto;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Hide everything on the page */
+  body * {
+    visibility: hidden;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Show only receipt container and its children */
+  .receipt-container,
+  .receipt-container * {
+    visibility: visible !important;
+  }
+  
+  /* Position receipt at top-left, no margins */
+  .receipt-container {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 80mm !important;
+    max-width: 80mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+  }
+  
+  /* Hide all page elements except receipt */
+  body > *:not(.receipt-container),
+  header,
+  nav,
+  footer,
+  aside,
+  .no-print,
+  button:not(.receipt-container button),
+  .print\\:hidden {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  
+  /* Ensure receipt fits on single page */
+  .receipt-container {
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  
+  /* Remove any background colors/images */
+  body {
+    background: white !important;
+  }
+  
+  /* Ensure text is black for printing */
+  .receipt-container,
+  .receipt-container * {
+    color: black !important;
+    background: white !important;
+  }
+}

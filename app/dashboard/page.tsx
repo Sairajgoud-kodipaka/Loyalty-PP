@@ -235,9 +235,7 @@ async function CustomerCount() {
 }
 
 export default async function DashboardPage() {
-  // Middleware already handles authentication and redirects
-  // We only need to get the user if we need user data, but for now we'll skip requireAuth
-  // to avoid redirect loops. If user data is needed, use getCurrentUser() instead.
+  await requireAuth()
   const totalCustomers = await CustomerCount()
   const isNewUser = totalCustomers === 0
   

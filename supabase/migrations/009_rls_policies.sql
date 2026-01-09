@@ -174,3 +174,4 @@ USING (is_authenticated_user());
 -- USING (get_user_role() IN ('manager', 'admin'))
 -- WITH CHECK (get_user_role() IN ('manager', 'admin'));
 
+

@@ -10,6 +10,7 @@ import Button from '@/components/ui/Button'
 import Card, { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import Badge from '@/components/ui/Badge'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
+import PurchaseSuccessModal from './PurchaseSuccessModal'
 import { cn } from '@/lib/utils/cn'
 
 export default function PurchaseForm() {
@@ -24,6 +25,9 @@ export default function PurchaseForm() {
   const [invoiceNumber, setInvoiceNumber] = useState('')
   const [pointsEarned, setPointsEarned] = useState(0)
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [transactionResult, setTransactionResult] = useState<any>(null)
+  const [availablePoints, setAvailablePoints] = useState(0)
 
   useEffect(() => {
     if (customerId) {
@@ -32,6 +36,7 @@ export default function PurchaseForm() {
         .then(data => {
           if (data.success) {
             setCustomer(data.data.customer)
+            setAvailablePoints(data.data.points?.available || 0)
           } else {
             toast.error('Failed to load customer')
             router.push('/customers/search')
@@ -49,14 +54,30 @@ export default function PurchaseForm() {
 
   useEffect(() => {
     const amount = parseFloat(billAmount) || 0
+    
+    // Validate amount range
+    if (isNaN(amount) || amount < 0) {
+      setPointsEarned(0)
+      return
+    }
+    
+    if (amount > 99999999.99) {
+      setErrors((prev) => ({
+        ...prev,
+        billAmount: 'Maximum bill amount is ₹99,999,999.99',
+      }))
+      setPointsEarned(0)
+      return
+    }
+    
     if (amount >= 50) {
       setPointsEarned(Math.floor(amount / 50))
     } else {
       setPointsEarned(0)
     }
     
-    // Clear error when amount changes
-    if (errors.billAmount && amount >= 50) {
+    // Clear error when amount is valid
+    if (errors.billAmount && amount >= 50 && amount <= 99999999.99) {
       setErrors((prev) => {
         const newErrors = { ...prev }
         delete newErrors.billAmount
@@ -75,8 +96,12 @@ export default function PurchaseForm() {
     }
     
     const amount = parseFloat(billAmount)
-    if (isNaN(amount) || amount < 50) {
+    if (isNaN(amount) || !isFinite(amount) || amount < 50) {
       setErrors({ billAmount: 'Minimum bill amount is ₹50' })
+      return
+    }
+    if (amount > 99999999.99) {
+      setErrors({ billAmount: 'Maximum bill amount is ₹99,999,999.99' })
       return
     }
     
@@ -101,10 +126,13 @@ export default function PurchaseForm() {
         throw new Error(result.error || 'Failed to record purchase')
       }
       
+      // Store transaction result and show success modal
+      setTransactionResult(result.data)
+      setShowSuccessModal(true)
+      
       toast.success(`Purchase recorded! ${pointsEarned} points earned.`, {
         duration: 5000,
       })
-      router.push(`/customers/${customerId}`)
     } catch (error: any) {
       toast.error(error.message)
     } finally {
@@ -198,12 +226,13 @@ export default function PurchaseForm() {
                 type="number"
                 required
                 min="50"
+                max="99999999.99"
                 step="0.01"
                 value={billAmount}
                 onChange={(e) => setBillAmount(e.target.value)}
                 placeholder="Enter bill amount"
                 error={errors.billAmount}
-                helperText="Minimum amount: ₹50"
+                helperText="Amount range: ₹50 - ₹99,999,999.99"
                 disabled={loading}
                 autoFocus
               />
@@ -283,6 +312,28 @@ export default function PurchaseForm() {
             </form>
           </CardContent>
         </Card>
+
+        {/* Success Modal */}
+        {showSuccessModal && transactionResult && customer && (
+          <PurchaseSuccessModal
+            isOpen={showSuccessModal}
+            onClose={() => {
+              setShowSuccessModal(false)
+              router.push(`/customers/${customerId}`)
+            }}
+            transaction={transactionResult}
+            customer={{
+              name: customer.name,
+              mgp_id: customer.mgp_id,
+              id: customer.id,
+              phone: customer.phone,
+              email: customer.email,
+            }}
+            billAmount={parseFloat(billAmount)}
+            invoiceNumber={invoiceNumber || null}
+            availableBalance={availablePoints + pointsEarned}
+          />
+        )}
       </div>
     </div>
   )

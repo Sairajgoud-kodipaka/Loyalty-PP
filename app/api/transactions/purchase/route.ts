@@ -5,7 +5,12 @@ import { z } from 'zod'
 
 const purchaseSchema = z.object({
   customer_id: z.string().uuid(),
-  bill_amount: z.number().min(50, 'Minimum bill amount is ₹50'),
+  bill_amount: z.number()
+    .min(50, 'Minimum bill amount is ₹50')
+    .max(99999999.99, 'Maximum bill amount is ₹99,999,999.99')
+    .refine((val) => !isNaN(val) && isFinite(val), {
+      message: 'Bill amount must be a valid number',
+    }),
   invoice_number: z.string().optional().nullable(),
 })
 

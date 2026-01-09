@@ -57,7 +57,7 @@ export default async function SearchCustomersPage() {
               </div>
               <h3 className="font-semibold mb-1">New Customer</h3>
               <p className="text-sm text-muted-foreground">
-                Can't find a customer? Register them now
+                Can&apos;t find a customer? Register them now
               </p>
             </CardContent>
           </Card>

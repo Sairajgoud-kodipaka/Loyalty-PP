@@ -125,11 +125,28 @@ export async function searchCustomers(query: string) {
     }
   }
   
-  // Search by name (partial match)
+  // Search by Aadhar if query matches pattern (12 digits)
+  const isAadharPattern = /^[0-9]{12}$/.test(query)
+  
+  if (isAadharPattern) {
+    const { data: aadharData } = await supabase
+      .from('customers')
+      .select('id, mgp_id, name, phone, available_points')
+      .eq('aadhar_number', query)
+      .limit(10)
+    
+    if (aadharData && aadharData.length > 0) {
+      return aadharData
+    }
+  }
+  
+  // Search by name (partial match, case-insensitive)
+  // Results sorted by available_points to show customers with more points first
   const { data } = await supabase
     .from('customers')
     .select('id, mgp_id, name, phone, available_points')
     .ilike('name', `%${query}%`)
+    .order('available_points', { ascending: false })
     .limit(10)
   
   return data || []

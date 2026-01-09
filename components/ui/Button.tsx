@@ -6,11 +6,12 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
   size?: 'default' | 'sm' | 'lg' | 'icon'
   isLoading?: boolean
+  asChild?: boolean
   children: React.ReactNode
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = 'default', size = 'default', isLoading, disabled, children, ...props }, ref) => {
+  ({ className, variant = 'default', size = 'default', isLoading, disabled, asChild, children, ...props }, ref) => {
     const baseStyles = 'inline-flex items-center justify-center rounded-md font-medium transition-smooth focus-ring disabled:pointer-events-none disabled:opacity-50'
     
     const variants = {
@@ -29,15 +30,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       icon: 'h-10 w-10',
     }
 
-    const Comp = (props.asChild && typeof children === 'object' && children !== null && 'type' in children) 
-      ? React.cloneElement(children as React.ReactElement, {
-          className: cn(baseStyles, variants[variant], sizes[size], className),
-          disabled: disabled || isLoading,
-          ...props,
-        })
-      : 'button'
-
-    if (props.asChild && typeof children === 'object' && children !== null) {
+    if (asChild && typeof children === 'object' && children !== null && React.isValidElement(children)) {
       return React.cloneElement(children as React.ReactElement, {
         className: cn(baseStyles, variants[variant], sizes[size], className),
         disabled: disabled || isLoading,
