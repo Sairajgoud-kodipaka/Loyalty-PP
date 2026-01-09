@@ -150,45 +150,39 @@ export default function SearchBar() {
               setShowResults(true)
             }
           }}
-          placeholder="Search by phone, MGP ID, or name... (Ctrl+K)"
-          className="w-full pl-12 pr-32 py-4 text-base border border-input rounded-lg bg-background focus-ring"
+          placeholder="Search by phone, MGP ID, or name..."
+          className="w-full pl-12 pr-28 sm:pr-32 py-3 sm:py-4 text-base border border-input rounded-lg bg-background focus-ring min-h-11"
           aria-label="Search customers"
           role="combobox"
           aria-expanded={showResults}
           aria-controls="search-results"
           aria-autocomplete="list"
         />
-        {query.length >= 2 && (
-          <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
-            {loading ? (
-              <Loader2 className="w-5 h-5 text-muted-foreground animate-spin" aria-hidden="true" />
-            ) : (
-              <kbd className="hidden sm:inline-flex h-6 select-none items-center gap-1 rounded border bg-muted px-2 font-mono text-xs font-medium text-muted-foreground">
-                <span className="text-xs">⌘</span>K
-              </kbd>
-            )}
+        {/* Loading indicator - only show when loading and no button overlap */}
+        {query.length >= 2 && loading && (
+          <div className="absolute right-14 sm:right-20 top-1/2 transform -translate-y-1/2">
+            <Loader2 className="w-5 h-5 text-muted-foreground animate-spin" aria-hidden="true" />
           </div>
         )}
-        <div className="absolute right-2 top-1/2 transform -translate-y-1/2 sm:hidden">
+        {/* Keyboard shortcut - desktop only, positioned before button */}
+        {query.length >= 2 && !loading && (
+          <div className="absolute right-14 sm:right-20 top-1/2 transform -translate-y-1/2 hidden sm:flex">
+            <kbd className="h-6 select-none items-center gap-1 rounded border bg-muted px-2 font-mono text-xs font-medium text-muted-foreground">
+              <span className="text-xs">⌘</span>K
+            </kbd>
+          </div>
+        )}
+        {/* Register button - mobile: icon only, desktop: full button */}
+        <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
           <Button
             onClick={() => router.push('/customers/register')}
             size="sm"
-            variant="ghost"
-            className="h-8 px-2"
+            variant={query.length >= 2 ? "ghost" : "default"}
+            className="h-9 sm:h-9 min-w-9 sm:min-w-auto px-2 sm:px-3"
             aria-label="Register new customer"
           >
-            <UserPlus className="w-4 h-4" aria-hidden="true" />
-          </Button>
-        </div>
-        <div className="absolute right-2 top-1/2 transform -translate-y-1/2 hidden sm:block">
-          <Button
-            onClick={() => router.push('/customers/register')}
-            size="sm"
-            variant="default"
-            className="h-9"
-          >
-            <UserPlus className="w-4 h-4 mr-2" aria-hidden="true" />
-            Register
+            <UserPlus className="w-4 h-4 sm:mr-2" aria-hidden="true" />
+            <span className="hidden sm:inline">Register</span>
           </Button>
         </div>
       </div>

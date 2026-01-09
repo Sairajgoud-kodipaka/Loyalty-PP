@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils/cn'
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
-  { name: 'Customers', href: '/customers/search', icon: Users },
+  { name: 'Customers', href: '/customers', icon: Users },
   { name: 'Transactions', href: '/transactions/history', icon: ShoppingBag },
   { name: 'Reports', href: '/reports/balance', icon: BarChart3 },
 ]

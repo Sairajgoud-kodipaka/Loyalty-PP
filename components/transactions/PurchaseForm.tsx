@@ -175,8 +175,8 @@ export default function PurchaseForm() {
   const expiryDate = addYears(activationDate, 2)
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-2xl mx-auto space-y-6">
+    <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 pb-24 lg:pb-8">
+      <div className="max-w-2xl mx-auto space-y-4 sm:space-y-6">
         <Button
           variant="ghost"
           onClick={() => router.back()}
@@ -198,9 +198,9 @@ export default function PurchaseForm() {
               </div>
             </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-4 sm:p-6">
             {/* Customer Info */}
-            <div className="bg-muted/50 rounded-lg p-4 mb-6">
+            <div className="bg-muted/50 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground mb-1">Customer</p>
@@ -218,7 +218,7 @@ export default function PurchaseForm() {
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
               <Input
                 label="Bill Amount (₹)"
                 name="bill_amount"
@@ -280,11 +280,11 @@ export default function PurchaseForm() {
                 disabled={loading}
               />
 
-              <div className="flex gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row gap-3 pt-4">
                 <Button
                   type="submit"
                   disabled={loading || !billAmount || parseFloat(billAmount) < 50}
-                  className="flex-1"
+                  className="flex-1 min-h-11"
                   isLoading={loading}
                 >
                   {loading ? (
@@ -304,7 +304,7 @@ export default function PurchaseForm() {
                   onClick={() => router.back()}
                   variant="outline"
                   disabled={loading}
-                  className="flex-1"
+                  className="flex-1 min-h-11"
                 >
                   Cancel
                 </Button>

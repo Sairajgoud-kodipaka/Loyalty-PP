@@ -240,12 +240,12 @@ export default async function DashboardPage() {
   const isNewUser = totalCustomers === 0
   
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 pb-24 lg:pb-8">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div>
-          <h1 className="text-4xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground mt-2">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight">Dashboard</h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-2">
             Welcome back! Here&apos;s what&apos;s happening with your loyalty program today.
           </p>
         </div>

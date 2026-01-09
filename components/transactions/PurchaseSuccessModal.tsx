@@ -73,44 +73,44 @@ export default function PurchaseSuccessModal({
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto print:max-w-none print:shadow-none print:border-none">
-        <CardHeader className="print:hidden">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-lg bg-success/10 flex items-center justify-center">
-                <CheckCircle2 className="h-5 w-5 text-success" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 backdrop-blur-sm">
+      <Card className="w-full max-w-sm sm:max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto print:max-w-none print:shadow-none print:border-none">
+        <CardHeader className="print:hidden p-4 sm:p-6">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+              <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg bg-success/10 flex items-center justify-center shrink-0">
+                <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-success" />
               </div>
-              <div>
-                <CardTitle>Purchase Successful!</CardTitle>
-                <p className="text-sm text-muted-foreground mt-1">
+              <div className="min-w-0">
+                <CardTitle className="text-lg sm:text-xl">Purchase Successful!</CardTitle>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1">
                   Transaction recorded successfully
                 </p>
               </div>
             </div>
             <button
               onClick={onClose}
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-muted-foreground hover:text-foreground transition-colors min-h-8 min-w-8 flex items-center justify-center shrink-0"
               aria-label="Close"
             >
               <X className="h-5 w-5" />
             </button>
           </div>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-4 sm:space-y-6 p-4 sm:p-6">
           {/* Customer Info */}
-          <div className="bg-muted/50 rounded-lg p-4">
-            <p className="text-sm text-muted-foreground mb-1">Customer</p>
-            <p className="font-semibold text-lg">{customer.name}</p>
-            <Badge variant="outline" className="mt-1 font-mono">
+          <div className="bg-muted/50 rounded-lg p-3 sm:p-4">
+            <p className="text-xs sm:text-sm text-muted-foreground mb-1">Customer</p>
+            <p className="font-semibold text-base sm:text-lg">{customer.name}</p>
+            <Badge variant="outline" className="mt-1 font-mono text-xs">
               {customer.mgp_id}
             </Badge>
           </div>
 
           {/* Transaction Details */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-lg">Transaction Details</h3>
-            <div className="grid grid-cols-2 gap-4 text-sm">
+          <div className="space-y-3 sm:space-y-4">
+            <h3 className="font-semibold text-base sm:text-lg">Transaction Details</h3>
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 text-sm">
               <div>
                 <p className="text-muted-foreground mb-1">Bill Amount</p>
                 <p className="font-semibold text-lg">₹{billAmount.toLocaleString('en-IN')}</p>
@@ -174,18 +174,18 @@ export default function PurchaseSuccessModal({
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t print:hidden">
-            <PrintButton className="flex-1" />
+            <PrintButton className="flex-1 min-h-11" />
             <Button
               onClick={handleNewPurchase}
               variant="outline"
-              className="flex-1"
+              className="flex-1 min-h-11"
             >
               <ShoppingBag className="mr-2 h-4 w-4" />
               New Purchase
             </Button>
             <Button
               onClick={handleViewProfile}
-              className="flex-1"
+              className="flex-1 min-h-11"
             >
               View Profile
             </Button>

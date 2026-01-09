@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/Toaster";
 import Sidebar from "@/components/layout/Sidebar";
+import BottomNav from "@/components/layout/BottomNav";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
 import { getCurrentUser } from "@/lib/auth";
 
@@ -29,9 +30,10 @@ export default async function RootLayout({
                 userEmail={user.email} 
                 userRole={user.role}
               />
-              <main className="flex-1 lg:ml-64 p-4 lg:p-8">
+              <main className="flex-1 lg:ml-64 pt-0 lg:pt-0 px-4 pb-20 lg:pb-4 lg:p-8">
                 {children}
               </main>
+              <BottomNav />
             </div>
           ) : (
             <main>{children}</main>
