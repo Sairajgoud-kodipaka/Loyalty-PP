@@ -76,55 +76,69 @@ export default function TransactionHistoryClient() {
   }
   
   return (
-    <div className="container mx-auto px-4 py-8 pb-24 lg:pb-8">
-      <div className="max-w-7xl mx-auto space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight">Transaction History</h1>
-            <p className="text-sm sm:text-base text-muted-foreground mt-2">
-              View all purchase and redemption transactions • {formatDateRange(filter)}
-            </p>
-          </div>
+    <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 lg:py-8 pb-24 lg:pb-8">
+      <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
+        {/* Header */}
+        <div>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight">Transaction History</h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1 sm:mt-2">
+            View all purchase and redemption transactions
+            <span className="hidden sm:inline"> • {formatDateRange(filter)}</span>
+          </p>
+          <p className="text-xs sm:hidden text-muted-foreground mt-1">
+            {formatDateRange(filter)}
+          </p>
         </div>
         
         <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle>All Transactions</CardTitle>
-                <CardDescription>Complete history of all transactions in the system</CardDescription>
+          <CardHeader className="p-3 sm:p-4 lg:p-6">
+            <div className="space-y-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <CardTitle className="text-lg sm:text-xl lg:text-2xl">All Transactions</CardTitle>
+                  <CardDescription className="text-xs sm:text-sm mt-1">
+                    Complete history of all transactions in the system
+                  </CardDescription>
+                </div>
               </div>
-              <div className="flex items-center gap-3">
-                <DateFilter value={filter} onChange={setFilter} />
-                <ExportButton 
-                  onClick={handleExport} 
-                  disabled={loading || transactions.length === 0}
-                />
+              
+              {/* Mobile: Stack filters and export button vertically */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2 border-t border-border">
+                <div className="w-full sm:w-auto">
+                  <DateFilter value={filter} onChange={setFilter} />
+                </div>
+                <div className="flex-shrink-0">
+                  <ExportButton 
+                    onClick={handleExport} 
+                    disabled={loading || transactions.length === 0}
+                  />
+                </div>
               </div>
             </div>
           </CardHeader>
-          <CardContent className="p-0">
+          <CardContent className="p-0 md:p-4 lg:p-6">
             {loading ? (
-              <div className="p-12 text-center">
+              <div className="p-8 sm:p-12 text-center">
                 <LoadingSpinner text="Loading transactions..." />
               </div>
             ) : error ? (
-              <div className="p-6 text-center text-destructive">
-                <p>Failed to load transactions: {error}</p>
+              <div className="p-4 sm:p-6 text-center text-destructive">
+                <p className="text-sm sm:text-base">Failed to load transactions: {error}</p>
               </div>
             ) : transactions && transactions.length > 0 ? (
               <>
                 {/* Mobile Card View */}
-                <div className="md:hidden space-y-3">
+                <div className="md:hidden space-y-2.5 px-3 sm:px-4 pb-3 sm:pb-4">
                   {transactions.map((transaction: any) => (
                     <Link
                       key={transaction.id}
                       href={`/customers/${transaction.customer_id}`}
-                      className="block p-4 rounded-lg border border-border bg-card hover:bg-accent/50 transition-colors"
+                      className="block p-3 sm:p-4 rounded-lg border border-border bg-card hover:bg-accent/50 active:bg-accent transition-colors touch-manipulation"
                     >
-                      <div className="flex items-start justify-between mb-3">
+                      {/* Header: Type, Status, and Amount */}
+                      <div className="flex items-start justify-between gap-3 mb-3">
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-2">
+                          <div className="flex items-center gap-2 mb-2 flex-wrap">
                             <Badge
                               variant={transaction.transaction_type === 'PURCHASE' ? 'success' : 'warning'}
                               className="shrink-0"
@@ -147,7 +161,7 @@ export default function TransactionHistoryClient() {
                               {transaction.status || 'active'}
                             </Badge>
                           </div>
-                          <div className="text-sm font-medium text-foreground mb-1">
+                          <div className="text-sm sm:text-base font-semibold text-foreground mb-1 truncate">
                             {transaction.customers.name}
                           </div>
                           <div className="text-xs text-muted-foreground font-mono mb-2">
@@ -157,8 +171,8 @@ export default function TransactionHistoryClient() {
                             {format(new Date(transaction.created_at), 'MMM d, yyyy h:mm a')}
                           </div>
                         </div>
-                        <div className="text-right ml-3 shrink-0">
-                          <div className="text-base font-semibold text-foreground mb-1">
+                        <div className="text-right shrink-0 ml-2">
+                          <div className="text-lg sm:text-xl font-bold text-foreground mb-1">
                             ₹{Number(transaction.bill_amount || 0).toLocaleString()}
                           </div>
                           {transaction.transaction_type === 'PURCHASE' ? (
@@ -271,9 +285,9 @@ export default function TransactionHistoryClient() {
                 </div>
               </>
             ) : (
-              <div className="p-12 text-center text-muted-foreground">
-                <p className="font-medium mb-1">No transactions found</p>
-                <p className="text-sm">No transactions found for the selected period</p>
+              <div className="p-8 sm:p-12 text-center text-muted-foreground">
+                <p className="font-medium mb-1 text-sm sm:text-base">No transactions found</p>
+                <p className="text-xs sm:text-sm">No transactions found for the selected period</p>
               </div>
             )}
           </CardContent>

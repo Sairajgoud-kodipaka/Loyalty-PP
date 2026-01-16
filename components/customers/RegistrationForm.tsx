@@ -123,9 +123,9 @@ export default function RegistrationForm() {
           </div>
         </div>
       </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <CardContent className="p-4 sm:p-6">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <div className="md:col-span-2">
               <Input
                 label="Full Name"
@@ -202,11 +202,11 @@ export default function RegistrationForm() {
             </p>
           </div>
 
-          <div className="flex gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row gap-3 pt-4">
             <Button
               type="submit"
               disabled={loading}
-              className="flex-1"
+              className="flex-1 min-h-11"
               isLoading={loading}
             >
               {loading ? (
@@ -226,7 +226,7 @@ export default function RegistrationForm() {
               onClick={() => router.back()}
               variant="outline"
               disabled={loading}
-              className="flex-1"
+              className="flex-1 min-h-11"
             >
               Cancel
             </Button>

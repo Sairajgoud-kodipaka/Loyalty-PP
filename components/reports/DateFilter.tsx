@@ -20,19 +20,19 @@ const filterOptions: { value: DateFilterType; label: string }[] = [
 
 export default function DateFilter({ value, onChange, className }: DateFilterProps) {
   return (
-    <div className={cn('flex flex-col sm:flex-row items-start sm:items-center gap-2', className)}>
-      <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground shrink-0">
-        <Calendar className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
-        <span>Filter:</span>
+    <div className={cn('w-full', className)}>
+      <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-0 sm:inline-flex sm:mr-3">
+        <Calendar className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" aria-hidden="true" />
+        <span className="font-medium">Filter:</span>
       </div>
-      <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+      <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 sm:gap-2">
         {filterOptions.map((option) => (
           <Button
             key={option.value}
             variant={value === option.value ? 'default' : 'outline'}
             size="sm"
             onClick={() => onChange(option.value)}
-            className="text-xs sm:text-sm min-h-8 sm:min-h-9 px-2.5 sm:px-3 touch-manipulation"
+            className="text-xs sm:text-sm min-h-9 sm:min-h-9 px-3 sm:px-3 touch-manipulation w-full sm:w-auto"
           >
             {option.label}
           </Button>

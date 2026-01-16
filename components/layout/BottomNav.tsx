@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Home, Users, ShoppingBag, BarChart3 } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
+import { useSidebar } from './SidebarContext'
 
 const navigationItems = [
   { href: '/dashboard', icon: Home, label: 'Dashboard' },
@@ -14,9 +15,15 @@ const navigationItems = [
 
 export default function BottomNav() {
   const pathname = usePathname()
+  const { isMobileOpen } = useSidebar()
 
   // Don't show on auth pages
   if (pathname?.startsWith('/login') || pathname?.startsWith('/register') || pathname?.startsWith('/(auth)')) {
+    return null
+  }
+
+  // Hide bottom nav when sidebar is open on mobile
+  if (isMobileOpen) {
     return null
   }
 
@@ -29,7 +36,8 @@ export default function BottomNav() {
       className={cn(
         'lg:hidden fixed bottom-0 left-0 right-0 z-40',
         'bg-card/95 backdrop-blur-sm border-t border-border shadow-lg',
-        'safe-area-inset-bottom' // For devices with home indicators
+        'safe-area-inset-bottom', // For devices with home indicators
+        'transition-transform duration-300 ease-in-out'
       )}
       style={{
         paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom, 0.5rem))',

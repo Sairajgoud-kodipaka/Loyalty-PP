@@ -3,6 +3,7 @@ import "./globals.css";
 import { Toaster } from "@/components/Toaster";
 import Sidebar from "@/components/layout/Sidebar";
 import BottomNav from "@/components/layout/BottomNav";
+import { SidebarProvider } from "@/components/layout/SidebarContext";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
 import ServiceWorkerRegistration from "@/components/pwa/ServiceWorkerRegistration";
 import PWAInstallPrompt from "@/components/pwa/PWAInstallPrompt";
@@ -43,18 +44,20 @@ export default async function RootLayout({
         <ErrorBoundary>
           <ServiceWorkerRegistration />
           {user ? (
-            <div className="flex min-h-screen">
-              <Sidebar 
-                userEmail={user.email} 
-                userRole={user.role}
-              />
-              <main className="flex-1 lg:ml-64 pt-0 lg:pt-0 px-4 pb-20 lg:pb-4 lg:p-8">
-                {children}
-              </main>
-              <BottomNav />
-              <PWAInstallPrompt />
-              <ServiceWorkerUpdatePrompt />
-            </div>
+            <SidebarProvider>
+              <div className="flex min-h-screen">
+                <Sidebar 
+                  userEmail={user.email} 
+                  userRole={user.role}
+                />
+                <main className="flex-1 lg:ml-64 pt-0 lg:pt-0 px-3 sm:px-4 lg:px-8 pb-20 lg:pb-4">
+                  {children}
+                </main>
+                <BottomNav />
+                <PWAInstallPrompt />
+                <ServiceWorkerUpdatePrompt />
+              </div>
+            </SidebarProvider>
           ) : (
             <main>{children}</main>
           )}

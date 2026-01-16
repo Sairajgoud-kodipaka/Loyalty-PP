@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
@@ -15,6 +15,7 @@ import {
 import { supabase } from '@/lib/supabase/client';
 import { cn } from '@/lib/utils/cn';
 import ProfileButton from './ProfileButton';
+import { useSidebar } from './SidebarContext';
 
 interface SidebarProps {
   userEmail?: string;
@@ -29,7 +30,7 @@ const navigationItems = [
 ];
 
 export default function Sidebar({ userEmail, userRole }: SidebarProps) {
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const { isMobileOpen, setIsMobileOpen } = useSidebar();
   const pathname = usePathname();
   const router = useRouter();
   const touchStartX = useRef<number | null>(null);
