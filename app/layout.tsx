@@ -4,11 +4,28 @@ import { Toaster } from "@/components/Toaster";
 import Sidebar from "@/components/layout/Sidebar";
 import BottomNav from "@/components/layout/BottomNav";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
+import ServiceWorkerRegistration from "@/components/pwa/ServiceWorkerRegistration";
+import PWAInstallPrompt from "@/components/pwa/PWAInstallPrompt";
+import ServiceWorkerUpdatePrompt from "@/components/pwa/ServiceWorkerUpdatePrompt";
 import { getCurrentUser } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: "MGP Loyalty Program System",
   description: "Customer rewards management platform for Mangatrai Pearls & Jewellers",
+  manifest: "/manifest.json",
+  themeColor: "#3b82f6",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "MGP Loyalty",
+  },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 5,
+    userScalable: true,
+    viewportFit: "cover",
+  },
 };
 
 export default async function RootLayout({
@@ -24,6 +41,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className="min-h-screen bg-background font-sans antialiased">
         <ErrorBoundary>
+          <ServiceWorkerRegistration />
           {user ? (
             <div className="flex min-h-screen">
               <Sidebar 
@@ -34,6 +52,8 @@ export default async function RootLayout({
                 {children}
               </main>
               <BottomNav />
+              <PWAInstallPrompt />
+              <ServiceWorkerUpdatePrompt />
             </div>
           ) : (
             <main>{children}</main>
